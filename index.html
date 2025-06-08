@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Document</title>
+</head>
+<body>
+
+    <div class="button-wrapper">
+        <button class="create-btn btn">Create Note</button>
+    </div>
+    <div class="input-field">
+        <div class="input-wrapper">
+            <div contenteditable="true" class="input-box"></div>
+            <div class="delete-symbol">x</div>
+        </div>
+    </div>
+
+    <script>
+        const createButton = document.querySelector(".create-btn")
+        const saveButton = document.querySelector(".save-btn")
+        const inputField = document.querySelector(".input-field")
+        let inputBoxes = document.querySelectorAll(".input-box")
+
+        function getStorage(){
+            inputField.innerHTML = localStorage.getItem("inputBoxes")
+        }
+        getStorage()
+
+        function updateStorage(){
+            localStorage.setItem("inputBoxes",inputField.innerHTML)
+        }
+
+        createButton.addEventListener("click", ()=>{
+                let newBox = document.createElement("div")
+                let newInput = document.createElement("div")
+                let deleteSymbol = document.createElement("div")
+
+                newBox.className = "input-wrapper"
+
+                newInput.className = "input-box"
+                newInput.setAttribute("contenteditable","true")
+
+                deleteSymbol.className = "delete-symbol"
+                deleteSymbol.textContent = "x"
+
+                inputField.appendChild(newBox).append(newInput,deleteSymbol)
+                updateStorage()
+            }
+        )
+
+        inputField.addEventListener("click",(event) => {
+            if(event.target.className === "delete-symbol"){
+                event.target.parentElement.remove()
+                updateStorage()
+            }
+
+            if(event.target.className === "input-box"){
+                inputBoxes = document.querySelectorAll(".input-box")
+                inputBoxes.forEach(box => {
+                    box.onkeyup = function(){
+                        updateStorage()
+                    }
+                })
+            }
+        })
+
+    </script>
+    <!-- <button class="btn">Change the Output</button>
+    <button class="calculate">Calculate All</button>
+    <input class="input-bar" type="text">
+    <span class="output-find"></span>
+    <span class="output-list"></span>
+    
+    
+
+    <script>
+        const inventory = [
+            { item: "Apple", price: 0.5, quantity: 120 },
+            { item: "Banana", price: 0.3, quantity: 85 },
+            { item: "Orange", price: 0.6, quantity: 60 },
+            { item: "Milk", price: 2.5, quantity: 30 },
+            { item: "Bread", price: 1.8, quantity: 25 },
+            { item: "Eggs (12-pack)", price: 3.0, quantity: 15 },
+            { item: "Rice (1kg)", price: 1.2, quantity: 100 },
+            { item: "Chicken Breast (1lb)", price: 4.5, quantity: 40 },
+            { item: "Toothpaste", price: 2.3, quantity: 50 },
+            { item: "Shampoo", price: 5.0, quantity: 20 },
+            { item: "Notebook", price: 1.5, quantity: 70 },
+            { item: "Pen", price: 0.8, quantity: 150 },
+            { item: "Backpack", price: 25.0, quantity: 10 },
+            { item: "Water Bottle", price: 3.5, quantity: 40 },
+            { item: "Chocolate Bar", price: 1.0, quantity: 90 }
+        ];
+
+        // Dom Elements //
+
+        const outputList = document.querySelector(".output-list")
+        const outputFind = document.querySelector(".output-find")
+        const btn = document.querySelector(".btn")
+        const input = document.querySelector(".input-bar")
+        const calculateBtn = document.querySelector(".calculate")
+
+        // Render Function // 
+
+        function renderInventory(inventoryArray){
+            let inventoryLine = inventoryArray.map(item => {
+                return `<p>${item.item}: $${item.price}, ${item.quantity}</p><br>`;
+            }).join("")
+
+            outputList.innerHTML = inventoryLine
+        }
+
+        // Filter Inventory //
+        function filterInventory(){
+            btn.addEventListener("click",(event) => {
+                const arrayMethodizer = inventory.filter(item => item.price >= 1)
+                renderInventory(arrayMethodizer)
+            })
+        }
+
+        // Item Search //
+        function itemSearch(){
+            if(event.key === "Enter"){
+                const foundItem = inventory.find(item => item.item.toLowerCase() === input.value.toLowerCase())
+                if(foundItem){
+                    outputFind.textContent = `${input.value} is in our inventory!`
+                } else {
+                    outputFind.textContent = `${input.value} is not in our inventory :(`
+                }
+
+                input.value = ""
+            }
+        }
+
+        // Get sum of all items //
+        function calculateTotal(){
+            let calculation = inventory.reduce((currentTotal,item) => {
+                return item.price * item.quantity + currentTotal
+            }, 0)
+
+            outputFind.textContent = calculation
+        }
+
+        input.addEventListener("keydown",itemSearch)
+        btn.addEventListener("click",filterInventory)
+        calculateBtn.addEventListener("click",calculateTotal) 
+
+        renderInventory(inventory)
+    </script> -->
+</body>
+</html>
